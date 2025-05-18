@@ -1,0 +1,93 @@
+package com.example.fitnessveegzersizuyg;
+
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+
+public class TakvimActivity extends AppCompatActivity {
+
+    RecyclerView recyclerViewTakvim;
+    TakvimAdapter takvimAdapter;
+    ArrayList<String> tarihListesi, kaloriListesi, egzersizListesi;
+
+    Button btnGeriDon;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_takvim);
+
+        recyclerViewTakvim = findViewById(R.id.recyclerViewTakvim);
+
+        btnGeriDon = findViewById(R.id.btnGeriDon);
+
+        tarihListesi = getIntent().getStringArrayListExtra("tarihListesi");
+        kaloriListesi = getIntent().getStringArrayListExtra("kaloriListesi");
+        egzersizListesi = getIntent().getStringArrayListExtra("egzersizListesi");
+
+        if (tarihListesi != null && kaloriListesi != null && egzersizListesi != null) {
+            recyclerViewTakvim.setLayoutManager(new LinearLayoutManager(this));
+            takvimAdapter = new TakvimAdapter(tarihListesi, kaloriListesi, egzersizListesi);
+            recyclerViewTakvim.setAdapter(takvimAdapter);
+        } else {
+            Toast.makeText(this, "Veri bulunamadı", Toast.LENGTH_SHORT).show();
+        }
+        btnGeriDon.setOnClickListener(v -> finish());
+
+    }
+
+    static class TakvimAdapter extends RecyclerView.Adapter<TakvimAdapter.TakvimViewHolder> {
+
+        private final ArrayList<String> tarihListesi;
+        private final ArrayList<String> kaloriListesi;
+        private final ArrayList<String> egzersizListesi;
+
+        public TakvimAdapter(ArrayList<String> tarihListesi, ArrayList<String> kaloriListesi, ArrayList<String> egzersizListesi) {
+            this.tarihListesi = tarihListesi;
+            this.kaloriListesi = kaloriListesi;
+            this.egzersizListesi = egzersizListesi;
+        }
+
+        @Override
+        public TakvimViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_takvim, parent, false);
+            return new TakvimViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(TakvimViewHolder holder, int position) {
+            holder.tvTarih.setText(tarihListesi.get(position));
+            holder.tvKalori.setText(kaloriListesi.get(position));
+            holder.tvEgzersiz.setText(egzersizListesi.get(position));
+        }
+
+        @Override
+        public int getItemCount() {
+            return Math.min(tarihListesi.size(), Math.min(kaloriListesi.size(), egzersizListesi.size()));
+        }
+
+        static class TakvimViewHolder extends RecyclerView.ViewHolder {
+
+            TextView tvTarih, tvKalori, tvEgzersiz;
+
+            public TakvimViewHolder(View itemView) {
+                super(itemView);
+                tvTarih = itemView.findViewById(R.id.tvTarih);
+                tvKalori = itemView.findViewById(R.id.tvKalori);
+                tvEgzersiz = itemView.findViewById(R.id.tvEgzersiz);
+            }
+        }
+
+    }
+}
+

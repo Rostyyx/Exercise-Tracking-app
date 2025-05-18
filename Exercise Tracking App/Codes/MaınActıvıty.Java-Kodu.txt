@@ -1,0 +1,285 @@
+package com.example.fitnessveegzersizuyg;
+
+import android.content.ContentValues;
+import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+
+import java.util.ArrayList;
+
+public class MainActivity extends AppCompatActivity {
+
+
+    EditText etBoy , etKilo , etKalori , etSpor, dtTarih;
+    RadioButton rb1 , rb2;
+    Button btnHesap , btnKaydet , btnTarih , btnGuncelle;
+    TextView tvDurum;
+    SQLiteDatabase db;
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_main);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+
+
+
+
+
+
+
+        });
+
+
+        etBoy = findViewById(R.id.etBoy);
+        etKilo = findViewById(R.id.etKilo);
+        etKalori = findViewById(R.id.etKalori);
+        etSpor = findViewById(R.id.etText);
+
+        rb1 = findViewById(R.id.rbCins);
+        rb2 = findViewById(R.id.rbCins2);
+
+
+        btnHesap = findViewById(R.id.btnHesapla);
+        btnKaydet = findViewById(R.id.btnKaydet);
+        btnTarih = findViewById(R.id.btnHistory);
+        btnGuncelle = findViewById(R.id.btnGuncelle);
+
+        tvDurum = findViewById(R.id.textStatus);
+        dtTarih = findViewById(R.id.dtTarih);
+
+        ArrayList<String> tarihListesi;
+        ArrayList<String> kaloriListesi;
+        ArrayList<String> egzersizListesi;
+
+        tarihListesi = new ArrayList<>();
+        kaloriListesi = new ArrayList<>();
+        egzersizListesi = new ArrayList<>();
+
+        db = openOrCreateDatabase("VeriTabani" , MODE_PRIVATE, null);
+        db.execSQL("CREATE TABLE IF NOT EXISTS kullanicilar (id INTEGER PRIMARY KEY AUTOINCREMENT, Boyunuz TEXT, Kilonuz TEXT, Cinsiyetiniz TEXT)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS takvim (id INTEGER PRIMARY KEY AUTOINCREMENT, tarih TEXT, kalori INTEGER, egzersiz TEXT)");
+
+
+        btnKaydet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+
+                String tarih = dtTarih.getText().toString().trim();
+                String kalori = etKalori.getText().toString().trim();
+                String egzersiz = etSpor.getText().toString().trim();
+
+                if (!tarih.isEmpty() && !kalori.isEmpty() && !egzersiz.isEmpty()) {
+                    ContentValues values = new ContentValues();
+                    values.put("tarih", tarih);
+                    values.put("kalori", Integer.parseInt(kalori)); // Kalori bilgisi integer olarak saklanacak
+                    values.put("egzersiz", egzersiz); // Egzersiz bilgisi saklanacak
+
+                    long result = db.insert("takvim", null, values);
+                    if (result != -1) {
+                        Toast.makeText(MainActivity.this, "Veri Kaydedildi", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(MainActivity.this, "Veri Kaydedilemedi", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(MainActivity.this, "Lütfen tüm alanları doldurun", Toast.LENGTH_SHORT).show();
+                }
+
+                String Boy = etBoy.getText().toString().trim();
+                String Kilo = etKilo.getText().toString().trim();
+                String Cinsiyet = "".trim();
+
+                if(rb1.isChecked()){
+
+                    Cinsiyet = "Erkek".trim();
+
+                }else {
+
+                    Cinsiyet = "Kadın".trim();
+
+                }
+
+                if(!Boy.isEmpty()){
+
+                    ContentValues values = new ContentValues();
+                    values.put("Boyunuz" , Boy);
+                    values.put("Kilonuz" , Kilo);
+                    values.put("Cinsiyetiniz" , Cinsiyet);
+
+                    long result = db.insert("kullanicilar" , null , values);
+                    if(result !=-1){
+
+                        Toast.makeText(MainActivity.this, "Kayıt Başarılı", Toast.LENGTH_SHORT).show();
+
+                        rb1.setEnabled(false);
+                        rb2.setEnabled(false);
+                    }else {
+
+                        Toast.makeText(MainActivity.this, "Kayıt Başarısız", Toast.LENGTH_SHORT).show();
+
+                    }
+                    if(Boy.isEmpty() || Kilo.isEmpty()){
+                        Toast.makeText(MainActivity.this, "Lütfen tüm alanları doldurun", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+
+
+
+                }
+
+            }
+        });
+
+        btnHesap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                int kalori = Integer.parseInt(etKalori.getText().toString());
+
+                int Boy = Integer.parseInt(etBoy.getText().toString());
+                int Kilo = Integer.parseInt(etKilo.getText().toString().trim());
+
+               double BMR = 0;
+
+                if(rb1.isChecked()){
+
+                    BMR = 10*Kilo+6.25*Boy-5*18+5;
+
+                }else {
+
+                    BMR = 10*Kilo+6.25*Boy-5*18-161;
+
+                }
+
+                if (kalori<BMR){
+
+                    tvDurum.setText("Günlük Durum: AŞILMADI");
+
+                }
+                if (kalori>BMR){
+
+                    tvDurum.setText("Günlük Durum: AŞILDI");
+
+                }
+                if (kalori==BMR){
+
+                    tvDurum.setText("Günlük Durum: TAM DENGEDE");
+
+                }
+
+
+            }
+        });
+
+        btnGuncelle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                // Boy ve Kilo alanlarından değerleri al
+                String Boy = etBoy.getText().toString().trim();
+                String Kilo = etKilo.getText().toString().trim();
+
+                // Eğer Boy ve Kilo boş değilsw güncelleme işlemi yap
+                if (!Boy.isEmpty() && !Kilo.isEmpty()) {
+                    // Veritabanında yalnızca Boy ve Kiloyu güncelle
+                    ContentValues values = new ContentValues();
+                    values.put("Boyunuz", Boy);
+                    values.put("Kilonuz", Kilo);
+
+                    // Kullanıcının idsine göre güncelleme yapıyoruz (id=1 örnek olarak)
+                    long userId = 1;  // Burada aktif kullanıcının ID'sini alman gerekebilir
+
+                    int result = db.update("kullanicilar", values, "id = ?", new String[]{String.valueOf(userId)});
+
+                    if (result > 0) {
+                        Toast.makeText(MainActivity.this, "Kayıt Güncellendi", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(MainActivity.this, "Kayıt Güncellenemedi", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(MainActivity.this, "Boy ve Kilo boş olamaz", Toast.LENGTH_SHORT).show();
+                }
+
+
+            }
+        });
+
+        btnTarih.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Cursor cursor = db.rawQuery("SELECT * FROM takvim", null);
+
+                if (cursor != null) {
+                    // Sütun indekslerini al
+                    int tarihIndex = cursor.getColumnIndex("tarih");
+                    int kaloriIndex = cursor.getColumnIndex("kalori");
+                    int egzersizIndex = cursor.getColumnIndex("egzersiz");
+
+                    // Sütun indekslerinin geçerli olup olmadığını kontrol et
+                    if (tarihIndex == -1 || kaloriIndex == -1 || egzersizIndex == -1) {
+                        Toast.makeText(MainActivity.this, "Veritabanında sütunlar bulunamadı", Toast.LENGTH_SHORT).show();
+                        cursor.close();
+                        return;
+                    }
+
+                    // Cursor'ı kontrol et ve verileri al
+                    if (cursor.moveToFirst()) {
+                        ArrayList<String> tarihListesi = new ArrayList<>();
+                        ArrayList<String> kaloriListesi = new ArrayList<>();
+                        ArrayList<String> egzersizListesi = new ArrayList<>();
+
+                        do {
+                            String tarih = cursor.getString(tarihIndex);
+                            String kalori = cursor.getString(kaloriIndex);
+                            String egzersiz = cursor.getString(egzersizIndex);
+
+                            tarihListesi.add(tarih);
+                            kaloriListesi.add(kalori);
+                            egzersizListesi.add(egzersiz);
+                        } while (cursor.moveToNext());
+
+                        // Veriyi intent ile gönder
+                        Intent intent = new Intent(MainActivity.this, TakvimActivity.class);
+                        intent.putStringArrayListExtra("tarihListesi", tarihListesi);
+                        intent.putStringArrayListExtra("kaloriListesi", kaloriListesi);
+                        intent.putStringArrayListExtra("egzersizListesi", egzersizListesi);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(MainActivity.this, "Veri bulunamadı", Toast.LENGTH_SHORT).show();
+                    }
+
+                    // Cursor'ı kapatmayı unutmayın
+                    cursor.close();
+                } else {
+                    Toast.makeText(MainActivity.this, "Cursor oluşturulamadı", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+
+
+
+
+    }
+}

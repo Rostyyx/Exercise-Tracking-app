@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F5F5"
+    android:padding="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#EEF6E1"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingBottom="16dp">
+
+        <!-- Başlık -->
+        <TextView
+            android:id="@+id/textTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="Fitness Ve Egzersiz Takipçisi"
+            android:textColor="#2D2D2D"
+            android:textSize="26sp"
+            android:textStyle="bold" />
+
+        <!-- Kayıt Bilgileri -->
+        <EditText
+            android:id="@+id/etBoy"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginBottom="12dp"
+            android:background="@android:color/white"
+            android:elevation="2dp"
+            android:hint="Boy (cm)"
+
+            android:importantForAccessibility="yes"
+            android:inputType="numberDecimal"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:textColor="#333333"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/etKilo"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginBottom="12dp"
+            android:background="@android:color/white"
+            android:elevation="2dp"
+            android:hint="Kilo (kg)"
+                      android:importantForAccessibility="yes"
+            android:inputType="numberDecimal"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:textColor="#333333"
+            android:textSize="16sp" />
+
+        <!-- Cinsiyet Seçimi -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="Cinsiyet"
+            android:textColor="#2D2D2D"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <RadioGroup
+            android:id="@+id/genderGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rbCins"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="24dp"
+                android:text="Erkek"
+                android:textColor="#2D2D2D" />
+
+            <RadioButton
+                android:id="@+id/rbCins2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Kadın"
+                android:textColor="#2D2D2D" />
+        </RadioGroup>
+
+        <!-- Tarih Seçimi -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Tarih Seç:"
+            android:textColor="#E66036"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <!-- Günlük Kalori -->
+        <EditText
+            android:id="@+id/dtTarih"
+            android:layout_width="match_parent"
+            android:layout_height="77dp"
+            android:ems="10"
+            android:hint="gg-aa-yyyy"
+            android:inputType="date" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Günlük Alınan Kalori"
+            android:textColor="#8BC34A"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/etKalori"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginBottom="12dp"
+            android:background="@android:color/white"
+            android:elevation="2dp"
+            android:hint="Örn: 1800"
+
+            android:inputType="number"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:textColor="#333333"
+            android:textSize="16sp" />
+
+        <!-- Egzersiz -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Yapılan Egzersizler"
+            android:textColor="#03A9F4"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/etText"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginBottom="12dp"
+            android:background="@android:color/white"
+            android:elevation="2dp"
+            android:hint="Örn: Koşu 30dk, Ağırlık Antremanı"
+
+            android:inputType="textMultiLine"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:textColor="#333333"
+            android:textSize="16sp" />
+
+        <!-- Günlük Durum -->
+        <TextView
+            android:id="@+id/tvKalori"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Günlük Durum"
+            android:textColor="#CCD94D"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="#E0E0E0"
+            android:text="Kalori Hedefi: AŞILMADI"
+            android:padding="12dp"
+            android:textColor="#2D2D2D"
+            android:textSize="16sp" />
+
+        <!-- Hesapla Butonu -->
+        <Button
+            android:id="@+id/btnHesapla"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="#FF9800"
+            android:elevation="2dp"
+            android:text="Hesapla"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+
+        <!-- Kaydet Butonu -->
+        <Button
+            android:id="@+id/btnKaydet"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="12dp"
+            android:backgroundTint="#4CAF50"
+            android:elevation="2dp"
+            android:text="Kaydet"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+
+        <!-- Geçmiş Butonu -->
+        <Button
+            android:id="@+id/btnHistory"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="12dp"
+            android:backgroundTint="#2196F3"
+            android:elevation="2dp"
+            android:text="Geçmişe Göz At"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/btnGuncelle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24px"
+            android:backgroundTint="#C5D14C"
+            android:text="Güncelle"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+</ScrollView>

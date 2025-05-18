@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    card_view:cardElevation="4dp"
+    card_view:cardCornerRadius="8dp"
+    android:padding="12dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvTarih"
+            android:layout_width="222dp"
+            android:layout_height="49dp"
+            android:text="Tarih"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvKalori"
+            android:layout_width="222dp"
+            android:layout_height="49dp"
+            android:layout_marginTop="4dp"
+            android:text="Kalori"
+            android:textColor="#333333"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tvEgzersiz"
+            android:layout_width="221dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="4dp"
+            android:text="Egzersiz"
+            android:textColor="#333333"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
